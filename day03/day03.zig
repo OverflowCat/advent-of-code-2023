@@ -3,9 +3,9 @@ const std = @import("std");
 
 pub fn main() !void {
     const input = @embedFile("input.txt");
-    var lines = std.mem.split(u8, input, "\n");
+    var lines = std.mem.split(u8, input, "\r\n");
     const line_count = 140;
-    const line_len = 142;
+    const line_len = 140;
     // create grid, 2d array of line_count * line_len
     var grid = std.mem.zeroes([line_count + 2][line_len + 2]u8);
     var num_grid = std.mem.zeroes([line_count][line_len]u8);
@@ -14,6 +14,7 @@ pub fn main() !void {
         var i: usize = 0;
         while (lines.next()) |line| {
             for (0.., line) |j, c| {
+                // std.debug.print("i,j: {},{}\n", .{ i, j });
                 if (c >= '0' and c <= '9') {
                     num_grid[i][j] = c;
                 } else if (c != '.') {
@@ -31,11 +32,13 @@ pub fn main() !void {
             i += 1;
         }
     }
-
     var result: usize = 0;
     var accumulated: usize = 0;
     for (0.., grid) |i, line| {
         for (0.., line) |j, flag| {
+            // if (i == 78) {
+            //     std.debug.print("{}", .{flag});
+            // }
             var cond = i == 0 or j == 0 or i == line_count + 1 or j == line_len + 1;
             var number_ascii: usize = 0;
             if (!cond) {
@@ -54,7 +57,7 @@ pub fn main() !void {
             } else if (flag == 1 or accumulated != 0) {
                 if (accumulated == 0) {
                     var k = j;
-                    while (k > 1 and num_grid[i - 1][k - 1] != 0) {
+                    while (k > 0 and num_grid[i - 1][k - 1] != 0) {
                         k -= 1;
                     }
                     k += 1;
