@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "overflowcat-aoc-2023"
+name = "overflowcat-aoc-2023-day-1"
 version = "0.1.0"

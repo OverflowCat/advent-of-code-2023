@@ -1,9 +1,7 @@
-use std::{collections::HashMap, f32::INFINITY};
-
 fn main() {
     let input = include_str!("../input/1.txt");
-    println!("Q1P1: {}", q1p1(input));
-    println!("Q1P2: {}", q1p2(input));
+    println!("Part 1: {}", q1p1(input));
+    println!("Part 2: {}", q1p2(input));
 }
 
 fn q1p1(input: &str) -> u32 {
