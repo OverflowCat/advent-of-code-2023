@@ -1,11 +1,11 @@
 import 'dart:io';
-import 'dart:math';
 
 void main() async {
   final String input = await new File('input.txt').readAsString();
   final List<String> lines = input.split('\n');
-  num sum = 0;
   final numSplitter = RegExp(r'[ ]+');
+  var cards = lines.map((line) => 1).toList();
+  var cardId = 1;
   for (var line in lines) {
     line = line.split(": ")[1];
     final [winning, mine] = line.split(" | ");
@@ -13,12 +13,17 @@ void main() async {
     winning.trim().split(numSplitter).forEach((element) {
       winningArr[int.parse(element)] = true;
     });
-    var power = -1;
+    var count = 0;
     mine.trim().split(numSplitter).forEach((element) {
-      if (winningArr[int.parse(element)]) power++;
+      if (winningArr[int.parse(element)]) count++;
     });
-    var result = (power == -1 ? 0 : pow(2, power));
-    sum += result;
+    final currentCardCount = cards[cardId - 1];
+    for (var i = 0; i < count; i++) cards[cardId + i] += currentCardCount;
+    cardId++;
   }
+
+  print(cards);
+
+  final sum = cards.fold(0, (previous, current) => previous + current);
   print(sum);
 }
