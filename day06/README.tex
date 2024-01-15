@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+\title{Day 06}
+\maketitle
+
+Consider the following inequality:
+
+\begin{equation}
+d = (T-t) \cdot t > D
+\end{equation}
+
+Which can be rewritten as:
+
+\begin{equation}
+- t^2 + Tt - D > 0
+\end{equation}
+
+Solving this quadratic inequality, we get:
+
+\begin{equation}
+\frac{T - \sqrt{T^2 - 4D}}{2} < t < \frac{T + \sqrt{T^2 - 4D}}{2}
+\end{equation}
+
+Upon rounding, we obtain:
+
+\begin{equation}
+\left \lceil \frac{T - \sqrt{T^2 - 4D}}{2} \right \rceil \leq t \leq \left \lfloor \frac{T + \sqrt{T^2 - 4D}}{2} \right \rfloor
+\end{equation}
+
+Where $T = 61709066, D = 643118413621041.$
+
+Thus, we have:
+
+\begin{equation}
+13279442.8 < t < 48429623.1
+\end{equation}
+
+The answer is $35150181$.
+
+\end{document}
