@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-char *CARD_LEXI_ORDER = "AKQJT98765432";
+char *CARD_LEXI_ORDER_JOKER = "AKQT98765432J";
 
 typedef enum
 {
@@ -28,17 +28,57 @@ HandType determineHandType(const char *hand)
         freq[(size_t)hand[i]]++;
     }
 
-    int pairs = 0, threes = 0, fours = 0, fives = 0;
-    for (int i = 0; i < 128; ++i)
+    unsigned short pairs = 0, threes = 0, fours = 0, fives = 0, jokers = freq['J'];
+    for (unsigned short i = '2'; i <= 'T'; ++i)
     {
-        if (freq[i] == 2)
-            pairs++;
-        if (freq[i] == 3)
-            threes++;
-        if (freq[i] == 4)
-            fours++;
+        if (i == 'J') // JJJJJ
+            continue;
         if (freq[i] == 5)
+        {
             fives++;
+            break;
+        }
+        if (freq[i] == 4)
+        {
+            fours++;
+            break;
+        }
+        if (freq[i] == 3)
+        {
+            threes++;
+        }
+        if (freq[i] == 2)
+        {
+            pairs++;
+        }
+    }
+
+    if (jokers)
+        printf(" %s", hand);
+    while (jokers)
+    {
+        if (jokers == 5) // JJJJJ
+            return FIVE_OF_A_KIND;
+        if (fours)
+        {
+            fives++;
+            fours--;
+        }
+        else if (threes)
+        {
+            fours++;
+            threes--;
+        }
+        else if (pairs)
+        {
+            threes++;
+            pairs--;
+        }
+        else
+        {
+            pairs++;
+        }
+        jokers--;
     }
 
     if (fives == 1)
@@ -69,8 +109,8 @@ int cstrcmp(const void *a, const void *b)
     char *strB = (char *)b;
     for (int i = 0; i < 5; ++i)
     {
-        int indexA = strchr(CARD_LEXI_ORDER, strA[i]) - CARD_LEXI_ORDER;
-        int indexB = strchr(CARD_LEXI_ORDER, strB[i]) - CARD_LEXI_ORDER;
+        int indexA = strchr(CARD_LEXI_ORDER_JOKER, strA[i]) - CARD_LEXI_ORDER_JOKER;
+        int indexB = strchr(CARD_LEXI_ORDER_JOKER, strB[i]) - CARD_LEXI_ORDER_JOKER;
         if (indexA != indexB)
             return indexA - indexB;
     }
@@ -103,7 +143,8 @@ int main()
     }
 
     qsort(hands, i, sizeof(Hand), compareHands);
-    
+    printf("\n");
+
     unsigned total = 0;
     for (size_t j = 0; j < i; ++j)
     {
@@ -111,5 +152,5 @@ int main()
         total += rank * hands[j].weight;
         printf("%s %u\n", hands[j].name, hands[j].weight);
     }
-    printf("total winnings: %u\n", total);
+    printf("\ntotal winnings: %u\n", total);
 }
