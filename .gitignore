@@ -3,3 +3,9 @@
 
 # F# (Ionide)
 .fake
+
+# C
+*.exe
+*.out
+*.o
+
