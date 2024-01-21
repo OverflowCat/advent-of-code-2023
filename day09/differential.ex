@@ -1,8 +1,4 @@
 defmodule Diff do
-  def diff(list) do
-    list |> Enum.zip(tl(list)) |> Enum.map(fn {a, b} -> b - a end)
-  end
-
   def parse(line) do
     line |> String.split(" ") |> Enum.map(&String.to_integer/1)
   end
@@ -11,8 +7,11 @@ defmodule Diff do
     {elem, elem + acc}
   end
 
-  def diff_to_end([elem | rest], acc) do
-    diff_to_end(diff([elem | rest]), List.last(rest) + acc)
+  def diff_to_end(list, acc) do
+    diff_to_end(
+      Enum.zip(list, tl(list)) |> Enum.map(fn {a, b} -> b - a end),
+      List.last(list) + acc
+    )
   end
 end
 
