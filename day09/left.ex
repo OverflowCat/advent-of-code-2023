@@ -8,7 +8,7 @@ defmodule LeftDiff do
   end
 
   def diff_to_end(list) do
-    diff = Enum.zip(list, tl(list)) |> Enum.map(fn {a, b} -> b - a end)
+    diff = list |> Enum.zip(tl(list)) |> Enum.map(fn {a, b} -> b - a end)
     List.first(list) - diff_to_end(diff)
   end
 end

@@ -4,21 +4,20 @@ defmodule Diff do
   end
 
   def diff_to_end([elem], acc) do
-    {elem, elem + acc}
+    elem + acc
   end
 
   def diff_to_end(list, acc) do
-    diff_to_end(
-      Enum.zip(list, tl(list)) |> Enum.map(fn {a, b} -> b - a end),
-      List.last(list) + acc
-    )
+    list
+    |> Enum.zip(tl(list))
+    |> Enum.map(fn {a, b} -> b - a end)
+    |> diff_to_end(List.last(list) + acc)
   end
 end
 
 File.stream!("input.txt")
-|> Enum.map(&String.trim/1)
-|> Enum.map(&Diff.parse/1)
-|> Enum.map(&Diff.diff_to_end(&1, 0))
-|> Enum.map(fn {_, n} -> n end)
-|> Enum.sum()
+|> Stream.map(&String.trim/1)
+|> Stream.map(&Diff.parse/1)
+|> Stream.map(&Diff.diff_to_end(&1, 0))
+|> Stream.sum()
 |> IO.puts()
